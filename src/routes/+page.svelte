@@ -5,6 +5,8 @@
 	import Experience from '$lib/components/Experience.svelte';
 	import ProjectsAndResearch from '$lib/components/ProjectsAndResearch.svelte';
     import FunFacts from '$lib/components/FunFacts.svelte';
+	import MediaHeatmap from '$lib/components/MediaHeatmap.svelte';
+
 </script>
 
 <Hero />
@@ -13,3 +15,4 @@
 <Education />
 <ProjectsAndResearch />
 <FunFacts />
+<MediaHeatmap />

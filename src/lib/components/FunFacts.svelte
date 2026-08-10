@@ -4,11 +4,7 @@
         "Media I partake in is books, movies, and video games. Here is an updating list of my 10 most recent reads, films, and games."
 </script>
 
-<section class="fun-facts">
-    <span class="label">Fun Facts</span>
-    <p>{bioText}</p>
-    <div class="underline"></div>
-</section>
+
 
 <style>
     .fun-facts {
