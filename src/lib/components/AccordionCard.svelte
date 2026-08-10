@@ -2,18 +2,18 @@
 	import { slide } from 'svelte/transition';
 
 	type Props = {
-		logo: string;
-		logoAlt: string;
-		heading: string;
-		subheading: string;
-		tagline?: string;
-		company?: string;
-		location?: string;
-		dates: string;
-		bullets?: string[];
-		isOpen: boolean;
-		onToggle: () => void;
-	};
+	    logo: string;
+	    logoAlt: string;
+	    heading: string;
+	    subheading?: string;
+	    tagline?: string;
+	    company?: string;
+	    location?: string;
+	    dates: string;
+	    bullets?: string[];
+	    isOpen: boolean;
+	    onToggle: () => void;
+    };
 
 	let {
 		logo,
@@ -34,17 +34,19 @@
 	<button class="card-header" onclick={onToggle} aria-expanded={isOpen}>
 		<img class="logo" src={logo} alt={logoAlt} />
 
-		<div class="header-main">
-			<h3>{heading}</h3>
-			<p class="subheading">{subheading}</p>
-			{#if company && location}
-				<p class="tagline">
-					@ <strong>{company}</strong> — {location}
-				</p>
-			{:else}
-				<p class="tagline">{tagline}</p>
-			{/if}
-		</div>
+        <div class="header-main">
+	        <h3>{heading}</h3>
+	            {#if subheading}
+		    <p class="subheading">{subheading}</p>
+	            {/if}
+	            {#if company && location}
+		    <p class="tagline">
+			    @ <strong>{company}</strong> — {location}
+		    </p>
+	            {:else}
+		    <p class="tagline">{tagline}</p>
+	            {/if}
+        </div>
 
 		<div class="header-meta">
 			<span class="dates">{dates}</span>

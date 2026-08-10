@@ -1,18 +1,18 @@
 <script lang="ts">
-	import Projects from './Projects.svelte';
 	import Research from './Research.svelte';
-
-	let view = $state<'projects' | 'research'>('projects');
+	import Projects from './Projects.svelte';
+	
+	let view = $state<'research' | 'projects'>('research');
 </script>
 
 <section class="projects-research">
 	<div class="toggle">
-		<button class:active={view === 'projects'} onclick={() => (view = 'projects')}>
-			Projects
+		<button class:active={view === 'research'} onclick={() => (view = 'research')}>
+    			Research
 		</button>
 		<span class="divider">/</span>
-		<button class:active={view === 'research'} onclick={() => (view = 'research')}>
-			Research
+		<button class:active={view === 'projects'} onclick={() => (view = 'projects')}>
+			Projects
 		</button>
 	</div>
 

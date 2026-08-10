@@ -24,7 +24,7 @@
 		},
 		{
 			id: 'project-2',
-			title: 'Bakery Production Forecaster',
+			title: 'Pastry Predictions',
 			summary: 'A short one-line summary of project two.',
 			tags: ['React', 'TypeScript'],
 			description: 'Full description of project two goes here. Replace with real content.',
@@ -32,14 +32,6 @@
 		},
 		{
 			id: 'project-3',
-			title: 'Random Heatmap Generator',
-			summary: 'A short one-line summary of project three.',
-			tags: ['SvelteKit', 'PostgreSQL'],
-			description: 'Full description of project three goes here. Replace with real content.',
-			links: [{ type: 'github', url: 'https://github.com/yourusername/project-three' }]
-		},
-		{
-			id: 'project-4',
 			title: 'Monkey Mania II',
 			summary: 'A short one-line summary of project four.',
 			tags: ['Flask', 'Docker'],
@@ -47,11 +39,11 @@
 			links: [{ type: 'github', url: 'https://github.com/yourusername/project-four' }]
 		},
 		{
-			id: 'project-5',
+			id: 'project-4',
 			title: 'gnoule.com',
 			summary: 'This website and it\'s previous iteration!',
-			tags: ['Terraform', 'Serverless'],
-			description: 'My personal portfolio website built from Svelte, javascript, and vanilla CSS, deployed on cloudflare pages. My other works involve experience with ReactJS, NodeJS, Typescript, and deployment through Vercel.',
+			tags: ['Svelte', 'React', 'Next.JS', 'TypeScript', 'CSS', 'Cloudflare Pages', 'Vercel'],
+			description: 'My personal portfolio website built from Svelte, javascript, and vanilla CSS, deployed on Cloudflare Pages. My other works (Built in 2022 right before AI!) involve experience with React, Next.JS, Typescript, and deployment through Vercel.',
             media: { type: 'image', src: '/images/project_portfolio.png', alt: 'Screenshot of gnoule.com' },
 			links: [{ type: 'demo', url: 'https://gnoule.com/' }, { type: 'github', url: 'https://github.com/yourusername/gnoule' }]
 		},

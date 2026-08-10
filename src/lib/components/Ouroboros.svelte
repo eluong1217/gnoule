@@ -125,7 +125,7 @@
 	.body {
 		fill: none;
 		stroke: var(--color-accent);
-		stroke-width: 15;
+		stroke-width: 10;
 		stroke-linecap: round;
 	}
 

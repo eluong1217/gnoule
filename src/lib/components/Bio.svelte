@@ -1,7 +1,7 @@
 <script lang="ts">
 	// Edit this to update your bio
 	const bioText =
-        "Data Scientist based in Boston, MA. I research labor economics, financial insititutions, and behavioral economics. Passionate about data and machine learning in economics. I enjoy consuming media in my free time.";
+        "Data Scientist based in Boston, MA. I research labor economics, financial insititutions, and behavioral economics. Passionate about data and machine learning in economics.";
 	let sectionEl: HTMLElement | undefined = $state();
 	let visible = $state(false);
 
@@ -31,7 +31,7 @@
 
 <style>
 	.bio {
-		max-width: 650px;
+		max-width: 1000px;
 		margin: 0 auto;
 		padding: 2rem 1.5rem 3.5rem;
 		text-align: center;
@@ -48,7 +48,7 @@
 
 	.label {
 		display: inline-block;
-		font-size: 0.75rem;
+		font-size: 1.5rem;
 		font-weight: 600;
 		letter-spacing: 0.15em;
 		text-transform: uppercase;

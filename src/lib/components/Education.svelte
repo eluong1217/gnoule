@@ -27,7 +27,7 @@
 			logo: '/logos/umb.png',
 			bullets: [
 				'Magna Cum Laude',
-				'Teaching Assistant: Theory of Computation, Ethics in Computer Science',
+				'Teaching Assistant: Theory of Computation, Ethics in Computer Science, First Year Seminar: Frame Theory',
 				'Leonard J. Kirsch Award Recipient'   
 			]
 		}
@@ -51,7 +51,6 @@
 				logo={entry.logo}
 				logoAlt="{entry.school} logo"
 				heading={entry.degree}
-				subheading=""
 				tagline="@ {entry.school}"
 				dates={entry.dates}
 				bullets={entry.bullets}

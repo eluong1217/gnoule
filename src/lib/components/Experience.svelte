@@ -19,7 +19,7 @@
 			logo: '/logos/bank-of-america.png',
 			bullets: [
 				'Managed financial portfolios for 30+ clients weekly, identifying lending and investment opportunities that generated approximately $100K in balance growth through data-informed financial recommendations.',
-				'Exceeded performance expectations by achieving 165% of management-defined sales and service goals through relationship management and data-informed financial recommendations.',
+				'Exceeded performance expectations by achieving +200% of management-defined sales and service goals through relationship management and personalized financial suggestions.',
 				'Executed financial transactions over $1M while maintaining regulatory and operational compliance.'
 			]
 		},
@@ -78,7 +78,6 @@
 				logo={entry.logo}
 				logoAlt="{entry.company} logo"
 				heading={entry.title}
-				subheading=""
 				company={entry.company}
 				location={entry.location}
 				dates={entry.dates}
