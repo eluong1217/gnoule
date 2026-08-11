@@ -4,15 +4,13 @@
 	import Education from '$lib/components/Education.svelte';
 	import Experience from '$lib/components/Experience.svelte';
 	import ProjectsAndResearch from '$lib/components/ProjectsAndResearch.svelte';
-    import FunFacts from '$lib/components/FunFacts.svelte';
 	import MediaHeatmap from '$lib/components/MediaHeatmap.svelte';
-
+	let { data } = $props();
 </script>
 
 <Hero />
 <Bio />
-<Experience />
 <Education />
+<Experience />
 <ProjectsAndResearch />
-<FunFacts />
-<MediaHeatmap />
+<MediaHeatmap entries={data.movies} />

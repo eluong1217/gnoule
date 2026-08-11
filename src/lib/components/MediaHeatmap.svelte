@@ -5,6 +5,9 @@
 	type Entry = { date: string; type: MediaType; title: string; posterUrl?: string; link?: string };
 	type Day = { date: string; label: string; entries: Entry[] };
 
+	let { entries = [] }: { entries: Entry[] } = $props();
+	
+	/*
 	function slugify(title: string) {
 		return title
 			.toLowerCase()
@@ -43,6 +46,7 @@
 		}
 		return out;
 	}
+	*/
 
 	const byDate = $derived.by(() => {
 		const map = new Map<string, Entry[]>();
