@@ -10,5 +10,8 @@
     "compatibility_flags": ["nodejs_compat"],
     "observability": {
         "enabled": true
-    }
+    },
+    "kv_namespaces": [
+        { "binding": "MEDIA_KV", "id": "2775bfe0a4d3478b8ff88d4febedc125" }
+    ]
 }
