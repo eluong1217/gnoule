@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 
-type RawMovie = { title: string; date: string; url: string };
+type RawMovie = { title: string; date: string; url: string; posterUrl?: string };
 
 export const load: PageServerLoad = async ({ platform }) => {
 	const raw = await platform?.env.MEDIA_KV.get('media:movies');
@@ -10,7 +10,8 @@ export const load: PageServerLoad = async ({ platform }) => {
 		date: m.date,
 		type: 'movie' as const,
 		title: m.title,
-		link: m.url
+		link: m.url,
+		posterUrl: m.posterUrl
 	}));
 
 	return { movies: entries };

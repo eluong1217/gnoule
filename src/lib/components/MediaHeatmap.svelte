@@ -6,47 +6,6 @@
 	type Day = { date: string; label: string; entries: Entry[] };
 
 	let { entries = [] }: { entries: Entry[] } = $props();
-	
-	/*
-	function slugify(title: string) {
-		return title
-			.toLowerCase()
-			.replace(/[^a-z0-9]+/g, '-')
-			.replace(/(^-|-$)/g, '');
-	}
-
-	// Stand-in data — swap for the real fetch from media:movies / media:games / media:books
-	// (Letterboxd RSS, Steam, Hardcover) once the cron worker + KV are wired up.
-	// Letterboxd's RSS gives a poster image + film link per entry for free, so movies get both here.
-	const entries: Entry[] = generateMockEntries();
-
-	function generateMockEntries(): Entry[] {
-		const titles: Record<MediaType, string[]> = {
-			movie: ['Oldboy', 'Parasite', 'Whiplash', 'Her', 'The Fall', 'Perfect Days'],
-			book: ['Piranesi', 'Klara and the Sun', 'The Fifth Season', 'Circe'],
-			game: ['Hades', 'Outer Wilds', 'Disco Elysium', 'Celeste']
-		};
-		const out: Entry[] = [];
-		const today = new Date();
-		for (let i = 0; i < 365; i++) {
-			const d = new Date(today);
-			d.setDate(d.getDate() - i);
-			for (const type of ['movie', 'book', 'game'] as MediaType[]) {
-				if (Math.random() < 0.12) {
-					const pool = titles[type];
-					const title = pool[Math.floor(Math.random() * pool.length)];
-					const entry: Entry = { date: d.toISOString().slice(0, 10), type, title };
-					if (type === 'movie') {
-						entry.posterUrl = `https://picsum.photos/seed/${encodeURIComponent(title)}/80/120`;
-						entry.link = `https://letterboxd.com/film/${slugify(title)}/`;
-					}
-					out.push(entry);
-				}
-			}
-		}
-		return out;
-	}
-	*/
 
 	const byDate = $derived.by(() => {
 		const map = new Map<string, Entry[]>();
@@ -137,6 +96,10 @@
 	function selectDay(day: Day) {
 		selectedDate = selectedDate === day.date ? null : day.date;
 	}
+
+	function cleanLink(url?: string) {
+		return url?.replace(/^(https:\/\/letterboxd\.com)\/[^/]+\/film\//, '$1/film/');
+	}
 </script>
 
 <section class="media-activity">
@@ -216,13 +179,12 @@
 						{#if selected.entries.length}
 							<div class="day-media">
 								{#each ALL_TYPES as type}
-									{@const entry = selected.entries.find((e) => e.type === type)}
-									{#if entry}
+									{#each selected.entries.filter((e) => e.type === type) as entry}
 										<div class="media-item">
 											{#if entry.posterUrl}
 												<a
 													class="media-thumb"
-													href={entry.link}
+													href={cleanLink(entry.link)}
 													target="_blank"
 													rel="noopener noreferrer"
 													aria-label="{entry.title} on Letterboxd"
@@ -238,7 +200,7 @@
 											{/if}
 											<span class="media-title">{entry.title}</span>
 										</div>
-									{/if}
+									{/each}
 								{/each}
 							</div>
 						{:else}
