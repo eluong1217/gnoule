@@ -56,15 +56,6 @@
 		margin-bottom: 0.75rem;
 	}
 
-	.quote-mark {
-		font-size: 4rem;
-		line-height: 1;
-		color: var(--color-accent);
-		opacity: 0.25;
-		font-family: Georgia, serif;
-		margin-bottom: -0.5rem;
-	}
-
 	.bio p {
 		font-size: 1.2rem;
 		line-height: 1.75;

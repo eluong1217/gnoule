@@ -43,7 +43,7 @@
 			title: 'gnoule.com',
 			summary: 'This website and it\'s previous iteration!',
 			tags: ['Svelte', 'React', 'Next.JS', 'TypeScript', 'CSS', 'Cloudflare Pages', 'Vercel'],
-			description: 'My personal portfolio website built from Svelte, javascript, and vanilla CSS, deployed on Cloudflare Pages. My other works (Built in 2022 right before AI!) involve experience with React, Next.JS, Typescript, and deployment through Vercel.',
+			description: 'My personal portfolio website built from Svelte, javascript, and vanilla CSS, deployed on Cloudflare Pages. My other works (Built in 2022, pre-AI) involve experience with React, Next.JS, Typescript, and deployment through Vercel.',
             media: { type: 'image', src: '/images/project_portfolio.png', alt: 'Screenshot of gnoule.com' },
 			links: [{ type: 'demo', url: 'https://gnoule.com/' }, { type: 'github', url: 'https://github.com/yourusername/gnoule' }]
 		},

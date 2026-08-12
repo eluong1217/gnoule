@@ -133,12 +133,4 @@
 		fill: var(--color-bg);
 		opacity: 0.25;
 	}
-
-	.head-shape {
-		fill: var(--color-accent);
-	}
-
-	.eye {
-		fill: var(--color-bg);
-	}
 </style>
