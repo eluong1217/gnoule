@@ -25,12 +25,32 @@
 
 	const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-	// 53 columns, Sunday-aligned, ending today — classic contribution-graph shape
+	const thisYear = new Date().getFullYear();
+
+	// Years with at least one entry, plus the current year, newest first
+	const availableYears = $derived.by(() => {
+		const years = new Set<number>([thisYear]);
+		for (const e of entries) years.add(new Date(`${e.date}T00:00:00`).getFullYear());
+		return [...years].sort((a, b) => b - a);
+	});
+
+	let selectedYear = $state(thisYear);
+
+	// Selected year: exactly Jan 1–Dec 31, no padding into adjacent years (first/last columns
+	// may be partial weeks). Current year: rolling 365 days ending today (GitHub-style).
 	const weeks = $derived.by(() => {
-		const end = new Date();
-		end.setHours(0, 0, 0, 0);
-		const start = new Date(end);
-		start.setDate(start.getDate() - end.getDay() - 7 * 52);
+		let start: Date;
+		let end: Date;
+
+		if (selectedYear === thisYear) {
+			end = new Date();
+			end.setHours(0, 0, 0, 0);
+			start = new Date(end);
+			start.setDate(start.getDate() - 365);
+		} else {
+			start = new Date(selectedYear, 0, 1);
+			end = new Date(selectedYear, 11, 31);
+		}
 
 		const out: Day[][] = [];
 		let week: Day[] = [];
@@ -48,15 +68,17 @@
 		return out;
 	});
 
-	// month label per week column: show only where the month changes
+	// { text, weekIndex } for each month that starts within a given week column — positioned, not one-per-column
 	const monthLabels = $derived.by(() => {
+		const labels: { text: string; weekIndex: number }[] = [];
 		let last = -1;
-		return weeks.map((week) => {
-			const m = new Date(week[0].date).getMonth();
-			if (m === last) return '';
+		weeks.forEach((week, i) => {
+			const m = new Date(`${week[0].date}T00:00:00`).getMonth();
+			if (m === last) return;
 			last = m;
-			return MONTHS[m];
+			labels.push({ text: MONTHS[m], weekIndex: i });
 		});
+		return labels;
 	});
 
 	const typeIcon: Record<MediaType, string> = { movie: '▤', book: '▥', game: '⌁' };
@@ -88,7 +110,18 @@
 		return `${day.label} — ${list}`;
 	}
 
+	let sectionEl: HTMLElement | undefined = $state();
 	let expanded = $state(true);
+
+	function toggleExpanded() {
+		expanded = !expanded;
+		if (expanded) {
+			setTimeout(() => {
+				sectionEl?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			}, 300);
+		}
+	}
+
 	let selectedDate = $state<string | null>(null);
 
 	const selected = $derived.by(() => weeks.flat().find((d) => d.date === selectedDate) ?? null);
@@ -102,11 +135,11 @@
 	}
 </script>
 
-<section class="media-activity">
+<section class="media-activity" bind:this={sectionEl}>
 	<div class="label">Fun Facts</div>
 	<div class="card">
 		<div class="header">
-			<button class="expand-toggle" onclick={() => (expanded = !expanded)} aria-expanded={expanded}>
+			<button class="expand-toggle" onclick={toggleExpanded} aria-expanded={expanded}>
 				<p class="summary">
 					I enjoy watching movies, reading books, and playing video games in my free time.
 					Here is an updating log of everything I've watched, read, and played in the recent years.
@@ -125,6 +158,12 @@
 						{typeGroupLabel[type].toUpperCase()}
 					</button>
 				{/each}
+
+				<select class="year-select" bind:value={selectedYear} aria-label="Select year">
+					{#each availableYears as year}
+						<option value={year}>{year}</option>
+					{/each}
+				</select>
 			</div>
 		</div>
 
@@ -132,9 +171,9 @@
 			<div class="heatmap-wrap" transition:slide={{ duration: 300 }}>
 				<div class="heatmap-scroll">
 					<div class="heatmap">
-						<div class="months">
+						<div class="months" style="--week-count: {weeks.length};">
 							{#each monthLabels as label}
-								<span class="month">{label}</span>
+								<span class="month" style="--week-index: {label.weekIndex};">{label.text}</span>
 							{/each}
 						</div>
 						<div class="grid">
@@ -149,11 +188,7 @@
 											aria-label={tooltip(day)}
 											aria-pressed={selected?.date === day.date}
 											onclick={() => selectDay(day)}
-										>
-											{#if selected?.date === day.date}
-												<span>{String(new Date(`${day.date}T00:00:00`).getDate()).padStart(2, '0')}</span>
-											{/if}
-										</button>
+										></button>
 									{/each}
 								</div>
 							{/each}
@@ -313,6 +348,24 @@
 		line-height: 0;
 	}
 
+	.year-select {
+		margin-left: auto;
+		padding: 0.32rem 0.6rem;
+		border: 1px solid var(--color-border);
+		border-radius: 999px;
+		background: var(--color-surface);
+		color: var(--color-text);
+		font: inherit;
+		font-size: 0.73rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		cursor: pointer;
+	}
+
+	.year-select:hover {
+		border-color: var(--color-accent);
+	}
+
 	/* Category colors are fixed brand hues (not theme-driven) so films/books/games
 	   stay visually distinct in both light and dark mode — same idea as GitHub's
 	   language-color dots. Alpha blends against whatever surface sits behind them. */
@@ -325,49 +378,42 @@
 	}
 
 	.heatmap-scroll {
-		overflow-x: auto;
 		padding: 0.15rem 0 0.35rem;
-		scrollbar-width: thin;
-	}
-
-	.heatmap {
-		min-width: 890px;
 	}
 
 	.months {
-		display: grid;
-		grid-template-columns: repeat(53, 1fr);
-		gap: 4px;
+		position: relative;
+		height: 0.85rem;
 		margin-bottom: 0.3rem;
-		padding: 0 1px;
 	}
 
 	.month {
-		min-width: 12px;
-		height: 0.85rem;
+		position: absolute;
+		left: calc(var(--week-index) / var(--week-count) * 100%);
 		color: var(--color-text);
 		opacity: 0.55;
 		font-size: 0.66rem;
 		line-height: 1;
+		white-space: nowrap;
 	}
 
 	.grid {
 		display: flex;
-		gap: 4px;
+		gap: clamp(2px, 0.4vw, 4px);
 	}
 
 	.week {
 		display: flex;
-		flex: 1 0 12px;
+		flex: 1 1 0;
 		flex-direction: column;
-		gap: 4px;
+		gap: clamp(2px, 0.4vw, 4px);
 	}
 
 	.cell {
 		position: relative;
 		display: grid;
-		width: 12px;
-		height: 12px;
+		width: 100%;
+		aspect-ratio: 1 / 1;
 		padding: 0;
 		place-items: center;
 		border: 0;
@@ -383,16 +429,6 @@
 		box-shadow: 0 0 0 1px var(--color-accent);
 	}
 
-	.cell > span {
-		position: absolute;
-		z-index: 2;
-		color: var(--color-bg);
-		font-size: 0.57rem;
-		font-weight: 700;
-		line-height: 1;
-		pointer-events: none;
-	}
-
 	.cell.level-1 {
 		background: color-mix(in srgb, var(--color-accent) 35%, var(--color-border));
 	}
@@ -406,13 +442,9 @@
 	}
 
 	.cell.selected {
-		width: 24px;
-		height: 24px;
-		margin: -6px;
-		border: 2px solid var(--color-text);
-		border-radius: 6px;
-		background: var(--color-accent);
-		box-shadow: 0 0 0 1px var(--color-bg);
+		box-shadow:
+			0 0 0 2px var(--color-bg),
+			0 0 0 4px var(--color-text);
 		z-index: 3;
 	}
 
