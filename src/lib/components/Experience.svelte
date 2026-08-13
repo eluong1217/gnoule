@@ -15,7 +15,7 @@
 			title: 'Associate Banker',
 			location: 'Boston, MA',
 			company: 'Bank of America',
-			dates: 'Jan 2026 — Present',
+			dates: '2026 — Present',
 			logo: '/logos/bank-of-america.png',
 			bullets: [
 				'Managed financial portfolios for 30+ clients weekly, identifying lending and investment opportunities that generated approximately $100K in balance growth through data-informed financial recommendations.',
@@ -27,7 +27,7 @@
             title: 'Research Analyst',
 			location: 'Boston, MA',
             company: 'Jiang Networks Lab ',
-			dates: 'Jun 2025 — Mar 2026',
+			dates: '2025 — 2026',
 			logo: '/logos/jianglabs.png',
 			bullets: [
 				'Analyzed 11+ years of LinkedIn network data using Python, pandas, NetworkX, etc. to model professional network structures and their relationship to labor market outcomes.',
@@ -39,7 +39,7 @@
             title: 'Undergraduate Research Assistant',
 			location: 'Boston, MA',
 			company: 'Economics Department, University of Massachusetts Boston',
-			dates: 'Sep 2024 — Sep 2025',
+			dates: '2024 — 2025',
 			logo: '/logos/umb.png',
 			bullets: [
 				'Built and deployed a website and API to visualize Black Land Loss data from the Agricultural Census, spanning 1910-2002, using Python, Flask, and React.',
@@ -51,7 +51,7 @@
             title: 'Research Analyst Intern',
 			location: 'Boston, MA',
             company: 'Joint Commitee on Financial Services ',
-			dates: 'Jan 2025 — May 2025',
+			dates: '2025',
 			logo: '/logos/statehouse.png',
 			bullets: [
 				'Researched federal and state financial regulations, academic literature, and industry reports to evaluate proposed cryptocurrency ATM legislation (H.1247), supporting evidence-based policymaking on consumer fraud prevention and virtual currency regulation.',

@@ -65,7 +65,7 @@
 
 	function scrollToCard(id: string) {
 		const el = cardRefs.get(id);
-		el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 	}
 
 	// ─────────────────────────────────────────────

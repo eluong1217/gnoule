@@ -13,4 +13,4 @@
 <Education />
 <Experience />
 <ProjectsAndResearch />
-<MediaHeatmap entries={data.movies} />
+<MediaHeatmap entries={data.entries} />

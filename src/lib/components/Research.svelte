@@ -77,6 +77,24 @@
 		// add more research items here
 	];
 
+	// ─────────────────────────────────────────────
+	// Refs to each card's DOM element, keyed by research id
+	// ─────────────────────────────────────────────
+	let cardRefs = new Map<string, HTMLDivElement>();
+
+	function registerCard(node: HTMLDivElement, id: string) {
+		cardRefs.set(id, node);
+		return {
+			destroy() {
+				cardRefs.delete(id);
+			}
+		};
+	}
+
+	function scrollToCard(id: string) {
+		cardRefs.get(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	}
+
 	const FLIP_DURATION = 350;
 	const CONTENT_DURATION = 300;
 
@@ -92,6 +110,7 @@
 		} else if (openId === null) {
 			openId = id;
 			setTimeout(() => {
+				scrollToCard(id);
 				revealedId = id;
 			}, FLIP_DURATION);
 		} else {
@@ -99,6 +118,7 @@
 			setTimeout(() => {
 				openId = id;
 				setTimeout(() => {
+					scrollToCard(id);
 					revealedId = id;
 				}, FLIP_DURATION);
 			}, CONTENT_DURATION);
@@ -168,6 +188,7 @@
 			class:expanded={openId === item.id}
 			style="grid-column: span {spanMap.get(i) ?? baseSpan};"
 			animate:flip={{ duration: FLIP_DURATION }}
+			use:registerCard={item.id}
 		>
 			<ProjectCard
 				title={item.title}
