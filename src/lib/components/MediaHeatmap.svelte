@@ -18,8 +18,14 @@
 	});
 
 	const counts = $derived.by(() => {
-		const c = { movie: 0, book: 0, game: 0 };
-		for (const e of entries) c[e.type]++;
+	const c = { movie: 0, book: 0, game: 0 };
+	const seen = new Set<string>();
+		for (const e of entries) {
+			const key = `${e.type}:${e.title}`;
+			if (seen.has(key)) continue;
+			seen.add(key);
+			c[e.type]++;
+		}
 		return c;
 	});
 
