@@ -119,6 +119,18 @@
 	let sectionEl: HTMLElement | undefined = $state();
 	let expanded = $state(true);
 
+	// On narrow screens the grid overflows horizontally; start at the most recent week.
+	let scrollEl: HTMLElement | undefined = $state();
+
+	function scrollToLatest() {
+		if (scrollEl) scrollEl.scrollLeft = scrollEl.scrollWidth;
+	}
+
+	$effect(() => {
+		weeks; // re-run when the year changes
+		if (expanded) requestAnimationFrame(scrollToLatest);
+	});
+
 	function toggleExpanded() {
 		expanded = !expanded;
 		if (expanded) {
@@ -175,9 +187,9 @@
 
 		{#if expanded}
 			<div class="heatmap-wrap" transition:slide={{ duration: 300 }}>
-				<div class="heatmap-scroll">
-					<div class="heatmap">
-						<div class="months" style="--week-count: {weeks.length};">
+				<div class="heatmap-scroll" bind:this={scrollEl}>
+					<div class="heatmap" style="--week-count: {weeks.length};">
+						<div class="months">
 							{#each monthLabels as label}
 								<span class="month" style="--week-index: {label.weekIndex};">{label.text}</span>
 							{/each}
@@ -385,6 +397,20 @@
 
 	.heatmap-scroll {
 		padding: 0.15rem 0 0.35rem;
+		overflow-x: auto;
+		overflow-y: hidden;
+		-webkit-overflow-scrolling: touch;
+		overscroll-behavior-x: contain;
+		scrollbar-width: thin;
+	}
+
+	/* Fluid on wide screens (fills the card), but never below --cell-min: past that the
+	   grid keeps its natural width and .heatmap-scroll scrolls instead of shrinking cells. */
+	.heatmap {
+		--cell-min: 13px;
+		--gap: clamp(2px, 0.4vw, 4px);
+		width: 100%;
+		min-width: calc(var(--week-count) * (var(--cell-min) + var(--gap)));
 	}
 
 	.months {
@@ -405,14 +431,15 @@
 
 	.grid {
 		display: flex;
-		gap: clamp(2px, 0.4vw, 4px);
+		gap: var(--gap);
 	}
 
 	.week {
 		display: flex;
 		flex: 1 1 0;
 		flex-direction: column;
-		gap: clamp(2px, 0.4vw, 4px);
+		gap: var(--gap);
+		min-width: var(--cell-min);
 	}
 
 	.cell {
@@ -566,8 +593,19 @@
 		font-size: 0.8rem;
 	}
 
+	/* Touch devices: no hover to reveal the tooltip, so make squares big enough to tap
+	   reliably and drop the hover-scale (it sticks after a tap). */
+	@media (hover: none) {
+		.heatmap { --cell-min: 18px; --gap: 3px; }
+		.cell:hover { transform: none; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-text) 6%, transparent); }
+		.cell:active { transform: scale(1.2); }
+	}
+
 	@media (max-width: 700px) {
 		.media-activity { padding-inline: 0.8rem; }
 		.header, .heatmap-wrap { padding-inline: 1rem; }
+		.legend { justify-content: flex-start; }
+		.media-item { width: 104px; }
+		.media-thumb { width: 72px; height: 104px; }
 	}
 </style>
