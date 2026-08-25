@@ -15,8 +15,8 @@
 	const research: ResearchItem[] = [
 		{
 			id: 'research-1',
-			title: 'Household debt, financialization and macroeconomics between Coordinated and Liberal Markets.',
-			summary: 'Research on the correlation between household debt, inequality and other variables based on their affiliate market.',
+			title: 'Varieties of Capitalism and Household Debt',
+			summary: 'Research on the correlation between household debt, financialization and macroeconomics between Coordinated and Liberal Markets.',
 			tags: ['Python', 'Stata', 'Excel', 'Econometrics', 'BIS', 'OECD', 'WID', 'World Bank'],
 			description:
 				'Constructed and analyzed panel data spanning 53 years, 21 OECD countries, and 100M+ households using Stata, Excel, and World Bank, OECD, BIS, and WID data to evaluate how capitalist systems influence consumer debt.',

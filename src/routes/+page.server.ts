@@ -1,18 +1,31 @@
 import type { PageServerLoad } from './$types';
 
-type RawItem = { title: string; date: string; url: string; posterUrl?: string };
+type RawEntry = { title: string; date: string; url: string; posterUrl?: string };
+type MediaType = 'movie' | 'book' | 'game';
+
+function mapEntries(raw: RawEntry[], type: MediaType) {
+	return raw.map((e) => ({
+		date: e.date,
+		type,
+		title: e.title,
+		link: e.url,
+		posterUrl: e.posterUrl
+	}));
+}
 
 export const load: PageServerLoad = async ({ platform }) => {
-	const [movieRaw, gameRaw] = await Promise.all([
-		platform?.env.MEDIA_KV.get('media:movies'),
-		platform?.env.MEDIA_KV.get('media:games')
+	const kv = platform?.env.MEDIA_KV;
+
+	const [moviesRaw, gamesRaw, booksRaw] = await Promise.all([
+		kv?.get('media:movies'),
+		kv?.get('media:games'),
+		kv?.get('media:books')
 	]);
-	const movies: RawItem[] = movieRaw ? JSON.parse(movieRaw) : [];
-	const games: RawItem[] = gameRaw ? JSON.parse(gameRaw) : [];
 
 	const entries = [
-		...movies.map((m) => ({ date: m.date, type: 'movie' as const, title: m.title, link: m.url, posterUrl: m.posterUrl })),
-		...games.map((g) => ({ date: g.date, type: 'game' as const, title: g.title, link: g.url, posterUrl: g.posterUrl }))
+		...mapEntries(moviesRaw ? JSON.parse(moviesRaw) : [], 'movie'),
+		...mapEntries(gamesRaw ? JSON.parse(gamesRaw) : [], 'game'),
+		...mapEntries(booksRaw ? JSON.parse(booksRaw) : [], 'book')
 	];
 
 	return { entries };

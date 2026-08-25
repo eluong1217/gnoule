@@ -159,6 +159,7 @@
 		font-size: 0.9rem;
 		opacity: 0.85;
 		line-height: 1.5;
+		white-space: pre-line;
 	}
 
 	.links {
