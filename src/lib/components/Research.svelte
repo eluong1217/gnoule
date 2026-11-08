@@ -17,7 +17,7 @@
 			id: 'research-1',
 			title: 'Varieties of Capitalism and Household Debt',
 			summary: 'Research on the correlation between household debt, financialization and macroeconomics between Coordinated and Liberal Markets.',
-			tags: ['Python', 'Stata', 'Excel', 'Econometrics', 'BIS', 'OECD', 'WID', 'World Bank'],
+			tags: [],
 			description:
 				'Constructed and analyzed panel data spanning 53 years, 21 OECD countries, and 100M+ households using Stata, Excel, and World Bank, OECD, BIS, and WID data to evaluate how capitalist systems influence consumer debt.',
 			media: { type: 'image', src: '/images/research1.jpg', alt: 'Results chart' },
@@ -29,7 +29,7 @@
             id: 'research-2',
             title: 'Employability between Network Connections and Social Capital',
             summary: 'A short one-line summary of research project four.',
-            tags: ['Python', 'Stata', 'Excel', 'Econometrics'],
+            tags: [],
             description:
                 'Full description of research project four goes here. Replace with real content.',
             links: [
@@ -37,35 +37,10 @@
             ]
         },
         {
-            id: 'research-3',
-            title: 'Marlene Research Project',
-            summary: 'A short one-line summary of research project two.',
-            tags: ['Stata', 'Python', 'Excel', 'R', 'Econometrics'],
-            media: { type: 'video', src: 'https://placeholdervideo.dev/1920x1080', alt: 'Screenshot of the Black Land Loss Visualization Tool' },
-            description:
-                'Full description of research project goes here. Replace with real content.',
-            links: [
-                { type: 'demo', url: 'https://blacklandloss.gnoule.com/' },
-                { type: 'article', url: 'https://www.aeaweb.org/articles?id=10.1257/pandp.20221015' },
-                { type: 'github', url: 'https://github.com/yourname/your-repo' }
-            ]
-        },
-        {
             id: 'research-4',
             title: 'Cryptocurrency ATM Legislation Report',
             summary: 'A short one-line summary of research project three.',
-            tags: ['SvelteKit', 'PostgreSQL'],
-            description:
-                'Full description of research project three goes here. Replace with real content.',
-            links: [
-                { type: 'github', url: 'https://github.com/yourname/your-repo' }
-            ]
-        },
-        {
-            id: 'research-5',
-            title: 'Econometrics Final Project',
-            summary: 'A short one-line summary of research project three.',
-            tags: ['SvelteKit', 'PostgreSQL'],
+            tags: [],
             description:
                 'Full description of research project three goes here. Replace with real content.',
             links: [
