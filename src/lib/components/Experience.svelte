@@ -12,10 +12,10 @@
 
 	const entries: ExperienceEntry[] = [
 		{
-			title: 'Associate Banker',
+			title: 'Relationship Banker',
 			location: 'Boston, MA',
 			company: 'Bank of America',
-			dates: '2026 — Present',
+			dates: '2026',
 			logo: '/logos/bank-of-america.png',
 			bullets: [
 				'Managed financial portfolios for 30+ clients weekly, identifying lending and investment opportunities that generated approximately $100K in balance growth through data-informed financial recommendations.',
