@@ -2,125 +2,107 @@
 	// ─────────────────────────────────────────────
 	// Figure-8 (lemniscate) shape — fixed, never moves
 	// ─────────────────────────────────────────────
-	const aX = 300;
-	const aY = 225;
-	const centerX = 350;
-	const centerY = 275;
-	const scaleCount = 60;
-    const renderScale = 1.15;
+	const A_X = 300;
+	const A_Y = 225;
+	const CENTER_X = 350;
+	const CENTER_Y = 275;
+	const RENDER_SCALE = 1.15;
+	const SCALE_COUNT = 60;
+	const CURVE_SAMPLES = 300;
+	const SPEED = 0.01; // radians per frame
+	const TAU = Math.PI * 2;
 
 	function lemniscatePoint(t: number) {
 		const denom = 1 + Math.sin(t) ** 2;
-		const x = (aX * Math.cos(t)) / denom;
-		const y = (aY * Math.sin(t) * Math.cos(t)) / denom;
-		return { x: centerX + x, y: centerY + y };
+		return {
+			x: CENTER_X + (A_X * Math.cos(t)) / denom,
+			y: CENTER_Y + (A_Y * Math.sin(t) * Math.cos(t)) / denom
+		};
 	}
 
-	function lemniscateTangentAngle(t: number) {
+	/** Direction of travel along the curve at `t`, in degrees. */
+	function tangentAngle(t: number) {
 		const dt = 0.001;
 		const p1 = lemniscatePoint(t - dt);
 		const p2 = lemniscatePoint(t + dt);
-		return Math.atan2(p2.y - p1.y, p2.x - p1.x);
+		return (Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180) / Math.PI;
 	}
 
-	const CURVE_SAMPLES = 300;
-	const curvePoints = Array.from({ length: CURVE_SAMPLES }, (_, i) => {
-		const t = (i / CURVE_SAMPLES) * Math.PI * 2;
-		return lemniscatePoint(t);
-	});
+	function pointWithAngle(t: number) {
+		return { ...lemniscatePoint(t), angle: tangentAngle(t) };
+	}
 
 	const bodyPath =
-		curvePoints.map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`)).join(' ') + ' Z';
+		Array.from({ length: CURVE_SAMPLES }, (_, i) => {
+			const { x, y } = lemniscatePoint((i / CURVE_SAMPLES) * TAU);
+			return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
+		}).join(' ') + ' Z';
+
+	// ─────────────────────────────────────────────
+	// The head and the scale texture both travel along the curve at the same speed
+	// ─────────────────────────────────────────────
+	let phase = $state(0);
+
+	const head = $derived(pointWithAngle(phase));
 
 	// scale texture: small rotated ellipses spaced evenly along the curve
-	const scales = $derived.by(() => {
-    return Array.from({ length: scaleCount }, (_, i) => {
-            const t = (i / scaleCount) * Math.PI * 2 + scalePhase;
-            const { x, y } = lemniscatePoint(t);
-            const angle = (lemniscateTangentAngle(t) * 180) / Math.PI;
-        return { x, y, angle };
-        });
-    });
-
-	// ─────────────────────────────────────────────
-	// Head position + orientation — animates continuously along the curve
-	// ─────────────────────────────────────────────
-	let headX = $state(curvePoints[0].x);
-	let headY = $state(curvePoints[0].y);
-	let headAngle = $state((lemniscateTangentAngle(0) * 180) / Math.PI);
-    let scalePhase = $state(0);
+	const scales = $derived(
+		Array.from({ length: SCALE_COUNT }, (_, i) => pointWithAngle((i / SCALE_COUNT) * TAU + phase))
+	);
 
 	$effect(() => {
-		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-		if (prefersReducedMotion) return;
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-		const SPEED = 0.01;
-		let t = 0;
-		let frameId: number;
-
-		function loop() {
-			t += SPEED;
-			if (t > Math.PI * 2) t -= Math.PI * 2;
-			const p = lemniscatePoint(t);
-			headX = p.x;
-			headY = p.y;
-			headAngle = (lemniscateTangentAngle(t) * 180) / Math.PI;
+		let frameId = requestAnimationFrame(function loop() {
+			phase = (phase + SPEED) % TAU;
 			frameId = requestAnimationFrame(loop);
-            scalePhase += 0.01;
-		}
-
-		frameId = requestAnimationFrame(loop);
+		});
 		return () => cancelAnimationFrame(frameId);
 	});
 </script>
 
 <svg viewBox="0 0 700 550" class="ouroboros" aria-hidden="true">
-    <defs>
-        <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="8" result="blur" />
-            <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-            </feMerge>
-        </filter>
-    </defs>
+	<defs>
+		<filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+			<feGaussianBlur stdDeviation="8" result="blur" />
+			<feMerge>
+				<feMergeNode in="blur" />
+				<feMergeNode in="SourceGraphic" />
+			</feMerge>
+		</filter>
+	</defs>
 
-    <g transform={`translate(350 275) scale(${renderScale}) translate(-350 -275)`}>
-        <path d={bodyPath} class="body" />
+	<g
+		transform="translate({CENTER_X} {CENTER_Y}) scale({RENDER_SCALE}) translate({-CENTER_X} {-CENTER_Y})"
+	>
+		<path d={bodyPath} class="body" />
 
-        {#each scales as scale}
-            <ellipse
-                cx={scale.x}
-                cy={scale.y}
-                rx="9"
-                ry="5"
-                transform={`rotate(${scale.angle}, ${scale.x}, ${scale.y})`}
-                class="scale"
-            />
-        {/each}
+		{#each scales as scale, i (i)}
+			<ellipse
+				cx={scale.x}
+				cy={scale.y}
+				rx="9"
+				ry="5"
+				transform="rotate({scale.angle}, {scale.x}, {scale.y})"
+				class="scale"
+			/>
+		{/each}
 
-        <g transform={`translate(${headX}, ${headY}) rotate(${headAngle})`} filter="url(#glow)">
-            <image
-                href="/images/snakehead.png"
-                x="-20"
-                y="-25"
-                width="60"
-                height="60"
-                class="head-image"
-            />
-        </g>
-    </g>
+		<g transform="translate({head.x}, {head.y}) rotate({head.angle})" filter="url(#glow)">
+			<image href="/images/snakehead.png" x="-20" y="-25" width="60" height="60" />
+		</g>
+	</g>
 </svg>
 
 <style>
 	.ouroboros {
-        width: 100%;
-        max-width: 620px;
-        height: auto;
-        display: block;
-        margin: 0 auto;
-        overflow: visible;
-    }
+		width: 100%;
+		max-width: 620px;
+		height: auto;
+		display: block;
+		margin: 0 auto;
+		overflow: visible;
+	}
 
 	.body {
 		fill: none;

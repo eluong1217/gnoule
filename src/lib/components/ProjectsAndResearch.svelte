@@ -1,14 +1,15 @@
 <script lang="ts">
-	import Research from './Research.svelte';
-	import Projects from './Projects.svelte';
-	
+	import { projects } from '$lib/data/projects';
+	import { research } from '$lib/data/research';
+	import CardGrid from './CardGrid.svelte';
+
 	let view = $state<'research' | 'projects'>('research');
 </script>
 
 <section class="projects-research">
 	<div class="toggle">
 		<button class:active={view === 'research'} onclick={() => (view = 'research')}>
-    			Research
+			Research
 		</button>
 		<span class="divider">/</span>
 		<button class:active={view === 'projects'} onclick={() => (view = 'projects')}>
@@ -18,9 +19,9 @@
 
 	<div class="content">
 		{#if view === 'projects'}
-			<Projects />
+			<CardGrid items={projects} />
 		{:else}
-			<Research />
+			<CardGrid items={research} />
 		{/if}
 	</div>
 </section>
@@ -28,18 +29,13 @@
 <style>
 	.projects-research {
 		padding: 3rem 0;
-		max-width: 1100px;
-		margin: 0 auto;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
 	}
 
 	.toggle {
 		display: flex;
 		align-items: baseline;
 		gap: 0.75rem;
-		margin-bottom: 2rem;
+		margin-bottom: 1.5rem;
 	}
 
 	.toggle button {
@@ -48,32 +44,22 @@
 		cursor: pointer;
 		font-family: inherit;
 		font-size: 1.75rem;
-		font-weight: 600;
-		color: var(--color-text);
-		opacity: 0.4;
-		transition: opacity 0.25s ease, text-shadow 0.25s ease;
+		font-weight: 700;
+		color: var(--color-text-muted);
+		transition: color 0.25s ease;
+		padding: 0;
 	}
 
 	.toggle button.active {
-		opacity: 1;
 		color: var(--color-text);
 	}
 
 	.toggle button:hover {
-		opacity: 0.7;
-	}
-
-	.toggle button.active:hover {
-		opacity: 1;
+		color: var(--color-text);
 	}
 
 	.divider {
 		font-size: 1.5rem;
-		opacity: 0.3;
-		color: var(--color-text);
-	}
-
-	.content {
-		width: 100%;
+		color: var(--color-border);
 	}
 </style>

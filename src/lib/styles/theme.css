@@ -2,20 +2,24 @@
 	--color-bg: #f3f6f0;
 	--color-surface: #ecefe9;
 	--color-text: #1b1f1c;
-	--color-text-muted: #797c77;
+	--color-text-muted: #5f635e;
 	--color-border: #dbe3e3;
 	--color-accent: #619797;
-	--font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-	--color-scheme: light;
+	--font-body:
+		'Inter Variable', Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+		'Segoe UI', sans-serif;
+	--content-width: 900px;
+	--radius-sm: 4px;
+	--radius-lg: 8px;
+	color-scheme: light;
 }
 
 :root[data-theme='dark'] {
-	--color-bg: #000000;
+	--color-bg: #0c0f0d;
 	--color-surface: #1a1d1a;
 	--color-text: #e7eae6;
 	--color-text-muted: #929891;
 	--color-border: #2d312d;
 	--color-accent: #6fbebe;
-	--font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-	--color-scheme: dark;
+	color-scheme: dark;
 }

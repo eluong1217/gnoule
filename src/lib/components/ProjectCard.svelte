@@ -1,44 +1,15 @@
 <script lang="ts">
-	import { slide } from 'svelte/transition';
-
-	type LinkType = 'demo' | 'github' | 'article';
-
-	type MediaItem = {
-		type: 'image' | 'video';
-		src: string;
-		alt?: string;
-	};
-
-	type LinkItem = {
-		type: LinkType;
-		url: string;
-	};
+	import type { ShowcaseItem, ShowcaseLinkType } from '$lib/types';
 
 	type Props = {
-		title: string;
-		summary: string;
-		tags: string[];
-		description?: string;
-		media?: MediaItem;
-		links?: LinkItem[];
-		expanded?: boolean; // true once the card has taken its full-width shape
-		revealed?: boolean; // true once the content should be visible
+		item: ShowcaseItem;
+		expanded?: boolean;
 		onClick?: () => void;
 	};
 
-	let {
-		title,
-		summary,
-		tags,
-		description,
-		media,
-		links,
-		expanded = false,
-		revealed = false,
-		onClick
-	}: Props = $props();
+	let { item, expanded = false, onClick }: Props = $props();
 
-	const linkLabels: Record<LinkType, string> = {
+	const linkLabels: Record<ShowcaseLinkType, string> = {
 		demo: 'Try it out!',
 		github: 'Source code',
 		article: 'Read more!'
@@ -47,34 +18,36 @@
 
 <div class="card-content">
 	<button class="header" onclick={onClick} aria-expanded={expanded}>
-		<h3>{title}</h3>
-		<p class="summary">{summary}</p>
-		<div class="tags">
-			{#each tags as tag}
-				<span class="tag">{tag}</span>
-			{/each}
-		</div>
+		<h3>{item.title}</h3>
+		<p class="summary">{item.summary}</p>
+		{#if item.tags.length}
+			<div class="tags">
+				{#each item.tags as tag (tag)}
+					<span class="tag">{tag}</span>
+				{/each}
+			</div>
+		{/if}
 	</button>
 
-	{#if revealed}
-		<div class="expanded-content" transition:slide={{ duration: 300 }}>
-			{#if media}
+	{#if expanded}
+		<div class="expanded-content">
+			{#if item.media}
 				<div class="media">
-					{#if media.type === 'image'}
-						<img src={media.src} alt={media.alt ?? title} />
+					{#if item.media.type === 'image'}
+						<img src={item.media.src} alt={item.media.alt ?? item.title} />
 					{:else}
-						<video src={media.src} controls></video>
+						<video src={item.media.src} controls></video>
 					{/if}
 				</div>
 			{/if}
 
-			{#if description}
-				<p class="description">{description}</p>
+			{#if item.description}
+				<p class="description">{item.description}</p>
 			{/if}
 
-			{#if links?.length}
+			{#if item.links?.length}
 				<div class="links">
-					{#each links as link}
+					{#each item.links as link, i (i)}
 						<a class="link-button" href={link.url} target="_blank" rel="noopener noreferrer">
 							{linkLabels[link.type]}
 						</a>
@@ -87,20 +60,19 @@
 
 <style>
 	.card-content {
-	    display: flex;
-	    flex-direction: column;
-	    background: var(--color-surface, transparent);
-	    border: 1px solid var(--color-border, currentColor);
-	    border-radius: 8px;
-	    overflow: hidden;
-	    height: 100%;
-	    transition: border-color 0.2s ease;
-    }
+		display: flex;
+		flex-direction: column;
+		background: var(--color-surface, transparent);
+		border: 1px solid var(--color-border, currentColor);
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+		height: 100%;
+		transition: border-color 0.2s ease;
+	}
 
-    .card-content:hover {
-	    border-color: var(--color-accent);
-    }
-    
+	.card-content:hover {
+		border-color: var(--color-accent);
+	}
 
 	.header {
 		background: none;
@@ -122,7 +94,7 @@
 
 	.summary {
 		font-size: 0.9rem;
-		opacity: 0.8;
+		color: var(--color-text-muted);
 	}
 
 	.tags {
@@ -136,9 +108,9 @@
 		font-size: 0.75rem;
 		padding: 0.2rem 0.6rem;
 		border-radius: 999px;
-		background: var(--color-accent);
-		color: var(--color-bg);
-		opacity: 0.85;
+		background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+		color: var(--color-text);
+		border: 1px solid color-mix(in srgb, var(--color-accent) 55%, transparent);
 	}
 
 	.expanded-content {
@@ -151,13 +123,12 @@
 	.media img,
 	.media video {
 		width: 100%;
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		display: block;
 	}
 
 	.description {
 		font-size: 0.9rem;
-		opacity: 0.85;
 		line-height: 1.5;
 		white-space: pre-line;
 	}
@@ -172,11 +143,25 @@
 		font-size: 0.85rem;
 		padding: 0.4rem 0.9rem;
 		border: 1px solid var(--color-border, currentColor);
-		border-radius: 6px;
+		border-radius: var(--radius-sm);
 		color: var(--color-text);
 	}
 
 	.link-button:hover {
 		border-color: var(--color-accent);
+	}
+
+	/* Content rises in while the card itself morphs open (see CardGrid) */
+	@media (prefers-reduced-motion: no-preference) {
+		.expanded-content {
+			animation: rise-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+		}
+	}
+
+	@keyframes rise-in {
+		from {
+			opacity: 0;
+			transform: translateY(10px);
+		}
 	}
 </style>

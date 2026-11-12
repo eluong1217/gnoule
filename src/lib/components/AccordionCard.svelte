@@ -1,63 +1,45 @@
 <script lang="ts">
+	import { ChevronDown } from 'lucide-svelte';
 	import { slide } from 'svelte/transition';
+	import type { AccordionItem } from '$lib/types';
 
 	type Props = {
-	    logo: string;
-	    logoAlt: string;
-	    heading: string;
-	    subheading?: string;
-	    tagline?: string;
-	    company?: string;
-	    location?: string;
-	    dates: string;
-	    bullets?: string[];
-	    isOpen: boolean;
-	    onToggle: () => void;
-    };
+		item: AccordionItem;
+		isOpen: boolean;
+		onToggle: () => void;
+	};
 
-	let {
-		logo,
-		logoAlt,
-		heading,
-		subheading,
-		tagline,
-		company,
-		location,
-		dates,
-		bullets,
-		isOpen,
-		onToggle
-	}: Props = $props();
+	let { item, isOpen, onToggle }: Props = $props();
 </script>
 
 <li>
 	<button class="card-header" onclick={onToggle} aria-expanded={isOpen}>
-		<img class="logo" src={logo} alt={logoAlt} />
+		<img class="logo" src={item.logo} alt={item.logoAlt} />
 
-        <div class="header-main">
-	        <h3>{heading}</h3>
-	            {#if subheading}
-		    <p class="subheading">{subheading}</p>
-	            {/if}
-	            {#if company && location}
-		    <p class="tagline">
-			    @ <strong>{company}</strong> — {location}
-		    </p>
-	            {:else}
-		    <p class="tagline">{tagline}</p>
-	            {/if}
-        </div>
+		<div class="header-main">
+			<h3>{item.heading}</h3>
+			{#if item.subheading}
+				<p class="subheading">{item.subheading}</p>
+			{/if}
+			{#if item.company && item.location}
+				<p class="tagline">
+					@ <strong>{item.company}</strong> — {item.location}
+				</p>
+			{:else}
+				<p class="tagline">{item.tagline}</p>
+			{/if}
+		</div>
 
 		<div class="header-meta">
-			<span class="dates">{dates}</span>
-			<span class="chevron" class:open={isOpen}>⌄</span>
+			<span class="dates">{item.dates}</span>
+			<span class="chevron" class:open={isOpen}><ChevronDown size={16} /></span>
 		</div>
 	</button>
 
-	{#if isOpen && bullets?.length}
+	{#if isOpen && item.bullets?.length}
 		<div class="card-body" transition:slide={{ duration: 250 }}>
 			<ul class="bullets">
-				{#each bullets as bullet}
+				{#each item.bullets as bullet, i (i)}
 					<li>{bullet}</li>
 				{/each}
 			</ul>
@@ -67,15 +49,16 @@
 
 <style>
 	li {
-	    list-style: none;
-	    border-bottom: 1px solid var(--color-border, currentColor);
-	    border-left: 3px solid transparent;
-	    transition: border-left-color 0.2s ease;
-    }
+		list-style: none;
+		border-bottom: 1px solid var(--color-border, currentColor);
+		border-left: 3px solid transparent;
+		transition: border-left-color 0.2s ease;
+		padding-left: 0.75rem;
+	}
 
-    li:hover {
-	    border-left-color: var(--color-accent);
-    }
+	li:hover {
+		border-left-color: var(--color-accent);
+	}
 
 	.card-header {
 		width: 100%;
@@ -96,11 +79,12 @@
 		height: 48px;
 		object-fit: contain;
 		flex-shrink: 0;
-		border-radius: 4px;
+		border-radius: var(--radius-sm);
 	}
 
 	.header-main {
 		flex: 1;
+		min-width: 0;
 	}
 
 	.header-main h3 {
@@ -110,13 +94,12 @@
 
 	.subheading {
 		font-size: 0.9rem;
-		opacity: 0.7;
 		margin-top: 0.15rem;
+		color: var(--color-text-muted);
 	}
 
 	.tagline {
 		font-size: 0.95rem;
-		opacity: 0.85;
 		margin-top: 0.25rem;
 	}
 
@@ -130,12 +113,13 @@
 
 	.dates {
 		font-size: 0.9rem;
-		opacity: 0.7;
+		color: var(--color-text-muted);
 	}
 
 	.chevron {
-		display: inline-block;
+		display: inline-flex;
 		transition: transform 0.2s ease;
+		color: var(--color-text-muted);
 	}
 
 	.chevron.open {
@@ -154,9 +138,23 @@
 	}
 
 	.bullets li {
-		border-bottom: none;
 		font-size: 0.9rem;
-		opacity: 0.8;
 		list-style: disc;
+		border: none;
+		padding-left: 0;
+	}
+
+	/* Phones: move the dates under the title instead of squeezing it */
+	@media (max-width: 640px) {
+		.card-header {
+			flex-wrap: wrap;
+			row-gap: 0.35rem;
+		}
+
+		.header-meta {
+			width: 100%;
+			padding-left: calc(48px + 1rem);
+			justify-content: space-between;
+		}
 	}
 </style>
