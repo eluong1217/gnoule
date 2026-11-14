@@ -6,7 +6,7 @@ export const education: EducationEntry[] = [
 		degree: 'M.A. in Applied Economics',
 		dates: '2026 — 2027',
 		logo: '/logos/umb.png',
-		bullets: ['Relevant coursework: Quantative Methods I and II, Machine Learning', 'GPA: 4.0']
+		bullets: ['Relevant coursework: Quantitative Methods I and II, Machine Learning', 'GPA: 4.0']
 	},
 	{
 		school: 'University of Massachusetts Boston',

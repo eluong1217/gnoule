@@ -36,7 +36,16 @@
 					{#if item.media.type === 'image'}
 						<img src={item.media.src} alt={item.media.alt ?? item.title} />
 					{:else}
-						<video src={item.media.src} controls></video>
+						<video
+							src={item.media.src}
+							autoplay
+							muted
+							loop
+							playsinline
+							disablepictureinpicture
+							disableremoteplayback
+							aria-label={item.media.alt ?? item.title}
+						></video>
 					{/if}
 				</div>
 			{/if}
@@ -125,6 +134,10 @@
 		width: 100%;
 		border-radius: var(--radius-sm);
 		display: block;
+	}
+
+	.media video {
+		pointer-events: none;
 	}
 
 	.description {

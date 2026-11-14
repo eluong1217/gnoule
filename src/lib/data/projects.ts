@@ -9,8 +9,8 @@ export const projects: ShowcaseItem[] = [
 		tags: ['Python', 'React', 'Excel', 'JavaScript', 'Flask'],
 		media: {
 			type: 'video',
-			src: 'https://placeholdervideo.dev/1920x1080',
-			alt: 'Screenshot of the Black Land Loss Visualization Tool'
+			src: '/videos/black-land-loss.mp4',
+			alt: 'Demo of the Black Land Loss Visualization Tool'
 		},
 		description: `An interactive tool mapping the loss of Black-owned farmland across the American South from 1920–1997, built on USDA Census of Agriculture data and grounded in a Black land loss study published in AEA Papers and Proceedings, which put the compounded value of that lost land at roughly $326 billion.
 			
@@ -37,13 +37,21 @@ export const projects: ShowcaseItem[] = [
 			This role sharpened my ability to work with messy, real-world operational data and communicate findings to non-technical stakeholders — skills that carried directly into my later data science and research work.`,
 		links: [{ type: 'github', url: 'https://github.com/yourusername/project-two' }]
 	},
-	{
+		{
 		id: 'project-3',
-		title: 'Monkey Mania II',
-		summary: 'A short one-line summary of project four.',
-		tags: ['Flask', 'Docker'],
-		description: 'Full description of project four goes here. Replace with real content.',
-		links: [{ type: 'github', url: 'https://github.com/yourusername/project-four' }]
+		title: 'Monkey Mania II: Primate Party',
+		summary: 'A revamped version of my high school AP Computer Science class project.',
+		tags: ['TypeScript', 'Phaser', 'Node.js', 'WebSockets', 'Docker'],
+		media: {
+			type: 'video',
+			src: '/videos/mm2-trailer.webm',
+			alt: 'Trailer for Monkey Mania II: Primate Party'
+		},
+		description: 'Monkey Mania II: Primate Party is a real-time multiplayer party game that runs in the browser. The original Monkey Mania was a single-player fruit-catching game I wrote in Processing in 2018. This version includes new features, such as multiplayer, gameplay through browser, and three new minigames. I based the art style off of the PS2/Arcade era of gaming.',
+		links: [
+			{ type: 'demo', url: 'https://monkey-mania-ii.gnoule.com/' },
+			{ type: 'github', url: 'https://github.com/eluong1217/Monkey-Mania' }
+		]
 	},
 	{
 		id: 'project-4',
@@ -55,8 +63,8 @@ export const projects: ShowcaseItem[] = [
 			My other works (Built in 2022, pre-AI) involve experience with React, Next.JS, Typescript, and deployment through Vercel.`,
 		media: { type: 'image', src: '/images/project_portfolio.png', alt: 'Screenshot of gnoule.com' },
 		links: [
-			{ type: 'demo', url: 'https://gnoule.com/' },
-			{ type: 'github', url: 'https://github.com/yourusername/gnoule' }
+			{ type: 'demo', url: 'https://portfolio.gnoule.com/' },
+			{ type: 'github', url: 'https://github.com/eluong1217/portfolio-website' }
 		]
 	}
 ];
