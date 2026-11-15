@@ -9,7 +9,7 @@ export const projects: ShowcaseItem[] = [
 		tags: ['Python', 'React', 'Excel', 'JavaScript', 'Flask'],
 		media: {
 			type: 'video',
-			src: '/videos/black-land-loss.mp4',
+			src: '/videos/bll-demo.mp4',
 			alt: 'Demo of the Black Land Loss Visualization Tool'
 		},
 		description: `An interactive tool mapping the loss of Black-owned farmland across the American South from 1920–1997, built on USDA Census of Agriculture data and grounded in a Black land loss study published in AEA Papers and Proceedings, which put the compounded value of that lost land at roughly $326 billion.
@@ -44,10 +44,10 @@ export const projects: ShowcaseItem[] = [
 		tags: ['TypeScript', 'Phaser', 'Node.js', 'WebSockets', 'Docker'],
 		media: {
 			type: 'video',
-			src: '/videos/mm2-trailer.webm',
+			src: '/videos/monkey-mania-demo-540p.mp4',
 			alt: 'Trailer for Monkey Mania II: Primate Party'
 		},
-		description: 'Monkey Mania II: Primate Party is a real-time multiplayer party game that runs in the browser. The original Monkey Mania was a single-player fruit-catching game I wrote in Processing in 2018. This version includes new features, such as multiplayer, gameplay through browser, and three new minigames. I based the art style off of the PS2/Arcade era of gaming.',
+		description: 'Monkey Mania II: Primate Party is a real-time multiplayer party game that runs in the browser. The original Monkey Mania was a single-player fruit-catching game I wrote in Processing in 2018. This version includes new features, such as multiplayer, gameplay through browser, and three new minigames. I based the art style off of the PS2/Arcade era of gaming. Currently hosted on Render for demos, so it may take a couple of minutes to load if you decide to try it out',
 		links: [
 			{ type: 'demo', url: 'https://monkey-mania-ii.gnoule.com/' },
 			{ type: 'github', url: 'https://github.com/eluong1217/Monkey-Mania' }
